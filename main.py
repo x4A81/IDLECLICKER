@@ -61,7 +61,7 @@ while True:
         if et.kill:
             globals.entities.remove(et)
     draw_text(f"{globals.moola}฿", 
-              font, (255, 255, 255), screen, 170 - 17 * len(f"{globals.moola}฿"), 475)
+              font, (255, 255, 255), screen, 167 - 17 * len(f"{globals.moola}฿"), 475)
 
     globals.cursor.update(mouse_event)
     globals.cursor.draw(screen)

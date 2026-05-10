@@ -50,7 +50,6 @@ class Tips:
         self.colour = (200, 200, 0)
         self.kill = False
         self.img = pygame.image.load("assets/sprites/coin.png")
-        self.img = pygame.transform.scale_by(self.img, 2)
         self.rect = self.img.get_rect()
 
     def update(self, mouse_event : pygame.event):
@@ -63,7 +62,7 @@ class Tips:
         g = 0.2
         if self.y > 500: 
             return
-        if self.x < globals.shop_bounds.left + 37 or self.x > globals.shop_bounds.right - 37:
+        if self.x < globals.shop_bounds.left + 65 or self.x > globals.shop_bounds.right - 65:
             return
         if self.y >= 0:
             self.vel.y += g * 1.5

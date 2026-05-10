@@ -4,11 +4,11 @@ class Cursor:
     def __init__(self):
         self.is_clicking = False
         self.frame_index = 0
-        sheet = pygame.image.load("assets/sprites/mouse-sheet.png").convert_alpha()
+        sheet = pygame.image.load("assets/sprites/mouse.png").convert_alpha()
         self.frames = []
         for i in range(4):
-            img = sheet.subsurface((i * 32, 0, 32, 32))
-            self.frames.append(pygame.transform.scale_by(img, 2))
+            img = sheet.subsurface((i * 64, 0, 64, 64))
+            self.frames.append(img)
 
         self.image = self.frames[0]
         self.rect = self.image.get_rect()
@@ -18,7 +18,7 @@ class Cursor:
 
     def update(self, mouse_event : pygame.event):
         self.x, self.y = pygame.mouse.get_pos()
-        self.rect.topleft = (self.x-25, self.y-25)
+        self.rect.topleft = (self.x-18, self.y-8)
         if self.hovering:
             self.frame_index = 2
         else:
