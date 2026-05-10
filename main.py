@@ -1,6 +1,7 @@
 from profiteffects import *
 from music import *
 from cursor import Cursor
+from upgrades import *
 import pygame
 import random
 import globals
@@ -16,13 +17,15 @@ next_profit_time = 1000 * globals.profit_rate
 next_tip_time = 2000
 
 pygame.mouse.set_visible(False)
-cursor = Cursor()
 
 def draw_text(text, font, color, surface, x, y):
     textobj = font.render(text, True, color)
     surface.blit(textobj, (x, y))
 
 play_next_song()
+globals.cursor = Cursor()
+globals.entities.append(Upgrade(1, 10, 0, 100))
+globals.entities.append(Upgrade(2, 0, 2, 100))
 
 while True:
     dt = clock.tick(globals.FPS)
@@ -31,7 +34,7 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEBUTTONUP:
+        if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEBUTTONUP or event.type == pygame.MOUSEMOTION:
             mouse_event = event
 
         if event.type == SONG_END:
@@ -39,15 +42,15 @@ while True:
 
     screen.blit(bg_img, (0, 0))
     screen.blit(globals.shop_surf, (globals.WIDTH - 425, 25))
-
+    globals.cursor.set_hover(False)
     next_profit_time -= dt
     next_tip_time -= dt
     if next_profit_time <= 0:
-        add_profit()
+        add_profit(globals.profit)
         next_profit_time = 1000 * globals.profit_rate
     if next_tip_time <= 0:
-        add_tip()
-        next_tip_time = random.randint(3000, 7000)
+        if random.uniform(0, 1) <= globals.tip_chance: add_tip()
+        next_tip_time = 3000
 
     for et in globals.entities[:]:
         if et.isclickable:
@@ -60,6 +63,6 @@ while True:
     draw_text(f"{globals.moola}฿", 
               font, (255, 255, 255), screen, 170 - 17 * len(f"{globals.moola}฿"), 475)
 
-    cursor.update(mouse_event)
-    cursor.draw(screen)
+    globals.cursor.update(mouse_event)
+    globals.cursor.draw(screen)
     pygame.display.flip()
