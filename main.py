@@ -25,7 +25,7 @@ def draw_text(text, font, color, surface, x, y):
 play_next_song()
 globals.cursor = Cursor()
 globals.entities.append(Upgrade(1, 10, 0, 100))
-globals.entities.append(Upgrade(2, 0, 2, 100))
+globals.entities.append(Upgrade(2, 0, 0.02, 150))
 
 while True:
     dt = clock.tick(globals.FPS)
