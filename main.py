@@ -1,4 +1,6 @@
 from profiteffects import *
+from music import *
+from cursor import Cursor
 import pygame
 import random
 import globals
@@ -8,14 +10,19 @@ pygame.init()
 screen = pygame.display.set_mode((globals.WIDTH, globals.HEIGHT))
 pygame.display.set_caption("NOODLE SHOP CLICKER")
 clock = pygame.time.Clock()
-bg_img = pygame.image.load("assets/background.png").convert()
+bg_img = pygame.image.load("assets/sprites/background.png").convert()
 
 next_profit_time = 1000 * globals.profit_rate
 next_tip_time = 2000
 
+pygame.mouse.set_visible(False)
+cursor = Cursor()
+
 def draw_text(text, font, color, surface, x, y):
     textobj = font.render(text, True, color)
     surface.blit(textobj, (x, y))
+
+play_next_song()
 
 while True:
     dt = clock.tick(globals.FPS)
@@ -24,8 +31,11 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.MOUSEBUTTONUP:
             mouse_event = event
+
+        if event.type == SONG_END:
+            play_next_song()
 
     screen.blit(bg_img, (0, 0))
     screen.blit(globals.shop_surf, (globals.WIDTH - 425, 25))
@@ -47,6 +57,9 @@ while True:
         et.draw(screen)
         if et.kill:
             globals.entities.remove(et)
-    draw_text(f"${globals.moola}", 
-              font, (255, 255, 255), screen, 170 - 17 * len(f"${globals.moola}"), 490)
+    draw_text(f"{globals.moola}฿", 
+              font, (255, 255, 255), screen, 170 - 17 * len(f"{globals.moola}฿"), 475)
+
+    cursor.update(mouse_event)
+    cursor.draw(screen)
     pygame.display.flip()

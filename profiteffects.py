@@ -3,13 +3,13 @@ import globals
 
 import random
 
-def add_profit(a=10, x=None, y=300):
+def add_profit(a=10, x=None, y=400):
     globals.moola += a
-    rx = 10 + random.randint(0, globals.WIDTH) if x == None else x
+    rx = 10 + random.randint(globals.shop_bounds.left+75, globals.shop_bounds.right-75) if x == None else x
     globals.entities.append(ProfitEffects(rx, y, a))
 
-def add_tip(a=50, x=None, y=300):
-    rx = 10 + random.randint(0, globals.WIDTH) if x == None else x
+def add_tip(a=50, x=None, y=350):
+    rx = 10 + random.randint(globals.shop_bounds.left+75, globals.shop_bounds.right-75) if x == None else x
     globals.entities.append(Tips(rx, y, a))
 
 class ProfitEffects:
@@ -19,7 +19,7 @@ class ProfitEffects:
         self.y = y
         self.text = f"+${amount}"
         self.alpha = 255
-        self.font = pygame.font.Font(None, 36)
+        self.font = pygame.font.SysFont("arial", 36)
         self.colour = (0, 0, 0, self.alpha)
         self.kill = False
 
@@ -52,15 +52,17 @@ class Tips:
         self.radius = 15 
         self.rect = pygame.Rect(self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
 
-    def update(self, mouse_event):
+    def update(self, mouse_event : pygame.event):
         if mouse_event != None and mouse_event.type == pygame.MOUSEBUTTONDOWN:
-            if self.rect.collidepoint(mouse_event.pos):
+            if self.rect.collidepoint(pygame.mouse.get_pos()):
                 self.kill = True
                 add_profit(self.amount, self.x-10, self.y - 10)
                 return
 
         g = 0.2
-        if self.y > 350: 
+        if self.y > 500: 
+            return
+        if self.x < globals.shop_bounds.left + 17 or self.x > globals.shop_bounds.right - 17:
             return
         if self.y >= 0:
             self.vel.y += g * 1.5
