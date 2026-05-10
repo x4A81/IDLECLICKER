@@ -1,0 +1,1 @@
+This is a noodle shop idle clicker game where you upgrade your shop with money.
