@@ -17,9 +17,9 @@ class ProfitEffects:
         self.isclickable = False
         self.x = x
         self.y = y
-        self.text = f"+${amount}"
+        self.text = f"+{amount}฿"
         self.alpha = 255
-        self.font = pygame.font.SysFont("arial", 36)
+        self.font = pygame.font.Font("assets/NotoSansThai-Bold.ttf", 36)
         self.colour = (0, 0, 0, self.alpha)
         self.kill = False
 
@@ -49,8 +49,9 @@ class Tips:
         self.vel = Vector2(random.uniform(-3, 3), random.uniform(-2, -6))
         self.colour = (200, 200, 0)
         self.kill = False
-        self.radius = 15 
-        self.rect = pygame.Rect(self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
+        self.img = pygame.image.load("assets/sprites/coin.png")
+        self.img = pygame.transform.scale_by(self.img, 2)
+        self.rect = self.img.get_rect()
 
     def update(self, mouse_event : pygame.event):
         if mouse_event != None and mouse_event.type == pygame.MOUSEBUTTONDOWN:
@@ -62,7 +63,7 @@ class Tips:
         g = 0.2
         if self.y > 500: 
             return
-        if self.x < globals.shop_bounds.left + 17 or self.x > globals.shop_bounds.right - 17:
+        if self.x < globals.shop_bounds.left + 37 or self.x > globals.shop_bounds.right - 37:
             return
         if self.y >= 0:
             self.vel.y += g * 1.5
@@ -73,5 +74,4 @@ class Tips:
         self.rect.center = (self.x, self.y)
 
     def draw(self, surface):
-        pygame.draw.circle(surface, self.colour, (int(self.x), int(self.y)), self.radius)
-        pygame.draw.circle(surface, (0, 0, 0), (int(self.x), int(self.y)), self.radius, 2)
+        surface.blit(self.img, self.rect)
