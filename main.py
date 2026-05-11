@@ -26,7 +26,7 @@ play_next_song()
 globals.cursor = Cursor()
 globals.entities.append(Upgrade(1, 10, 0, 100))
 globals.entities.append(Upgrade(2, 0, 0.02, 150))
-
+deleted_update = 0
 while True:
     dt = clock.tick(globals.FPS)
     mouse_event = None
@@ -49,7 +49,7 @@ while True:
         add_profit(globals.profit)
         next_profit_time = 1000 * globals.profit_rate
     if next_tip_time <= 0:
-        if random.uniform(0, 1) <= globals.tip_chance: add_tip()
+        if random.uniform(0, 1) <= globals.tip_chance: add_tip(globals.tip_amount)
         next_tip_time = 3000
 
     for et in globals.entities[:]:
@@ -59,9 +59,17 @@ while True:
             et.update()
         et.draw(screen)
         if et.kill:
-            globals.entities.remove(et)
-    draw_text(f"{globals.moola}฿", 
-              font, (255, 255, 255), screen, 167 - 17 * len(f"{globals.moola}฿"), 475)
+            if hasattr(et, "order"):
+                deleted_update = et.order
+                globals.entities.remove(et)
+            
+                for other in globals.entities:
+                    if isinstance(other, Upgrade) and other.order > deleted_update:
+                        other.order -= 1
+            else:
+                globals.entities.remove(et)
+    draw_text(f"{globals.total_money}฿", 
+              font, (255, 255, 255), screen, 167 - 17 * len(f"{globals.total_money}฿"), 475)
 
     globals.cursor.update(mouse_event)
     globals.cursor.draw(screen)

@@ -3,12 +3,12 @@ import globals
 
 import random
 
-def add_profit(a=10, x=None, y=400):
-    globals.moola += a
+def add_profit(a=40, x=None, y=400):
+    globals.total_money += a
     rx = 10 + random.randint(globals.shop_bounds.left+75, globals.shop_bounds.right-75) if x == None else x
     globals.entities.append(ProfitEffects(rx, y, a))
 
-def add_tip(a=50, x=None, y=350):
+def add_tip(a=200, x=None, y=350):
     rx = 10 + random.randint(globals.shop_bounds.left+75, globals.shop_bounds.right-75) if x == None else x
     globals.entities.append(Tips(rx, y, a))
 

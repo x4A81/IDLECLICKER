@@ -1,9 +1,10 @@
 WIDTH, HEIGHT = 800, 600
 FPS = 60
 
-moola = 0
-profit = 10
+total_money = 0
+profit = 40
 tip_chance = 0.2
+tip_amount = 200
 profit_rate = 3
 entities = []
 
