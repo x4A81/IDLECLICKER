@@ -5,7 +5,8 @@ from upgrades import *
 import pygame
 import random
 import globals
-from globals import font
+from globals import font_thai
+import shop
 
 pygame.init()
 screen = pygame.display.set_mode((globals.WIDTH, globals.HEIGHT))
@@ -18,14 +19,13 @@ next_tip_time = 2000
 
 pygame.mouse.set_visible(False)
 
-def draw_text(text, font, color, surface, x, y):
-    textobj = font.render(text, True, color)
-    surface.blit(textobj, (x, y))
+def draw_text(text, font, colour, surface, rect):
+    font.render_to(surface, rect, text, colour)
 
 play_next_song()
 globals.cursor = Cursor()
-globals.entities.append(Upgrade(1, 10, 0, 100))
-globals.entities.append(Upgrade(2, 0, 0.02, 150))
+shop.setup_upgrades()
+
 deleted_update = 0
 while True:
     dt = clock.tick(globals.FPS)
@@ -68,8 +68,10 @@ while True:
                         other.order -= 1
             else:
                 globals.entities.remove(et)
-    draw_text(f"{globals.total_money}฿", 
-              font, (255, 255, 255), screen, 167 - 17 * len(f"{globals.total_money}฿"), 475)
+
+    money_st = globals.format_money(globals.total_money)
+    draw_text(money_st, 
+              font_thai, (255, 255, 255), screen, (167 - 17 * len(money_st), 495))
 
     globals.cursor.update(mouse_event)
     globals.cursor.draw(screen)

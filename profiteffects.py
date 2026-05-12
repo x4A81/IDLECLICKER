@@ -19,7 +19,7 @@ class ProfitEffects:
         self.y = y
         self.text = f"+{amount}฿"
         self.alpha = 255
-        self.font = pygame.font.Font("assets/NotoSansThai-Bold.ttf", 36)
+        self.font = globals.font_thai
         self.colour = (0, 0, 0, self.alpha)
         self.kill = False
 
@@ -30,9 +30,9 @@ class ProfitEffects:
             self.kill = True
 
     def draw(self, surface):
-        text_surf = self.font.render(self.text, True, (0, 0, 0))
+        text_surf = self.font.render(self.text, (0, 0, 0))
         # Create a copy to apply transparency
-        final_surf = text_surf.convert_alpha()
+        final_surf = text_surf[0].convert_alpha()
         final_surf.set_alpha(self.alpha)
         
         surface.blit(final_surf, (self.x, self.y))
