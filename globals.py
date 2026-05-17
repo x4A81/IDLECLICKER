@@ -2,7 +2,7 @@ import pygame
 import pygame.freetype
 
 WIDTH, HEIGHT = 480, 270
-SCALE = 1
+SCALE = 3
 WINDOW_WIDTH, WINDOW_HEIGHT = WIDTH * SCALE, HEIGHT * SCALE
 FPS = 60
 
@@ -18,8 +18,10 @@ pygame.init()
 shop_bounds = pygame.Rect((WIDTH - 295), 20, 275, 230)
 shop_surf = pygame.Surface((shop_bounds.width, shop_bounds.height))
 shop_surf.fill((0, 255, 255))
-font_thai = pygame.freetype.Font("assets/NotoSansThai-Bold.ttf", 30)
-font = pygame.freetype.Font("assets/VarelaRound-Regular.ttf", 24)
+pygame.freetype.set_default_resolution(72)
+font = pygame.freetype.Font("assets/bytebounce.medium.ttf", 34)
+font.antialiased = False
+sprites = pygame.image.load("assets/Sprites.png")
 
 def get_mouse_pos():
     x, y = pygame.mouse.get_pos()
@@ -43,9 +45,9 @@ def format_money(amount):
     # If it's a whole number, show no decimals (e.g., 1k)
     # If it has a remainder, show 1 decimal place (e.g., 1.5k)
     if amount == 0:
-        return "฿0"
+        return "0"
         
     if amount % 1 == 0:
-        return f"฿{int(amount)}{suffixes[suffix_index]}"
+        return f"{int(amount)}{suffixes[suffix_index]}"
     else:
-        return f"฿{amount:.1f}{suffixes[suffix_index]}"
+        return f"{amount:.1f}{suffixes[suffix_index]}"

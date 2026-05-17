@@ -16,9 +16,9 @@ class ProfitEffects:
         self.isclickable = False
         self.x = x
         self.y = y
-        self.text = f"+{amount}฿"
+        self.text = f"+{amount}"
         self.alpha = 255
-        self.font = globals.font_thai
+        self.font = globals.font
         self.colour = (0, 0, 0, self.alpha)
         self.kill = False
 
@@ -48,8 +48,8 @@ class Tips:
         self.vel = Vector2(random.uniform(-3, 3), random.uniform(-2, -6))
         self.colour = (200, 200, 0)
         self.kill = False
-        img = pygame.image.load("assets/Sprites.png")
-        self.img = img.subsurface((0,0,32,32))
+        sheet = globals.sprites
+        self.img = sheet.subsurface((0,32,16,16))
         self.rect = self.img.get_rect()
 
     def update(self, mouse_event : pygame.event):

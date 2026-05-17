@@ -11,34 +11,34 @@ class Upgrade:
         self.ishoverable = True
         self.kill = False
         self.frames = []
-        sheet = pygame.image.load("assets/sprites/upgrade-tile.png")
+        sheet = globals.sprites
         for i in range(3):
-            self.frames.append(sheet.subsurface(0, i * 64, 300, 64))
-        self.img = self.frames[0]
+            self.frames.append(sheet.subsurface(8, 8*7 + i * 32, 18*8, 64))
+        self.img = self.frames[1]
         self.rect = self.img.get_rect()
-        self.x = 20
+        self.x = 8
         self.order = order
-        self.y =  globals.HEIGHT
+        self.y = globals.HEIGHT
         self.rect.topleft = (self.x, self.y)
         self.title = title
         self.description = description
 
     def update(self, mouse_event : pygame.event):
-        target_y = (64+10) * (self.order - 1) + 100
+        target_y = (32) * (self.order - 1) + 50
         if self.order > 4:
             self.x = -400
         else:
-            self.x = 20
+            self.x = 8
         
         if hasattr(self, 'current_y'):
             self.current_y += (target_y - self.current_y) * 0.3
         else:
             self.current_y = target_y
         self.rect.topleft = (self.x, self.current_y)
-        self.img = self.frames[0]
-        if self.rect.collidepoint(pygame.mouse.get_pos()):
+        self.img = self.frames[1]
+        if self.rect.collidepoint(globals.get_mouse_pos()):
             globals.cursor.set_hover()
-            self.img = self.frames[2]
+            self.img = self.frames[0]
             if mouse_event != None:
                 if mouse_event.type == pygame.MOUSEBUTTONDOWN:
                     if globals.total_money >= self.cost:
@@ -49,19 +49,18 @@ class Upgrade:
 
     def draw(self, surface):
         if self.cost > globals.total_money:
-            self.img = self.frames[1]
+            self.img = self.frames[2]
         surface.blit(self.img, self.rect)
         
         y = self.y
         if hasattr(self, "current_y"):
             y = self.current_y
         
-        globals.font.size = 24
-        globals.font.strong = True
-        globals.font.render_to(surface,( self.x + 14, y + 12), self.title, (0,0,0))
-
-        globals.font.strong = False
-        globals.font.size = 14
-        globals.font.render_to(surface, (self.x + 14, y + 38), self.description, (0,0,0))
+        globals.font.size = 15
+        globals.font.render_to(surface,( self.x + 16, y + 10), self.title, (255,255,255))
         cost = globals.format_money(self.cost)
-        globals.font_thai.render_to(surface, (self.rect.right - 90, y + 16), cost, (255, 255, 255))
+        globals.font.render_to(surface, (self.rect.right - 40, y + 12), cost, (255, 255, 255))
+
+        globals.font.size = 10
+        globals.font.render_to(surface, (self.x + 14, y + 20), self.description, (0,0,0))
+        globals.font.size = 34

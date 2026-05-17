@@ -4,15 +4,15 @@ class Cursor:
     def __init__(self):
         self.is_clicking = False
         self.frame_index = 0
-        sheet = pygame.image.load("assets/Sprites.png")
+        sheet = globals.sprites
         self.frames = []
         for i in range(1,4):
-            img = sheet.subsurface((i * 32, 0, 32, 32))
+            img = sheet.subsurface((i * 32, 32, 16, 16))
             self.frames.append(img)
 
         self.image = self.frames[0]
         self.rect = self.image.get_rect()
-        self.click_sfx = pygame.mixer.Sound("assets/sounds/click.wav")
+        self.click_sfx = pygame.mixer.Sound("assets/click.wav")
         self.play_sound = False
         self.hovering = False
         self.just_pressed = False
@@ -22,7 +22,7 @@ class Cursor:
         self.x = self.x // globals.SCALE
         self.y = self.y // globals.SCALE
         
-        self.rect.topleft = (self.x-18, self.y-18)
+        self.rect.topleft = (self.x-2, self.y-2)
         self.play_sound = False
         if mouse_event != None and mouse_event.type == pygame.MOUSEBUTTONDOWN:
             self.is_clicking = True

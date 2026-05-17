@@ -5,7 +5,7 @@ from upgrades import *
 import pygame
 import random
 import globals
-from globals import font_thai, WIDTH, HEIGHT, WINDOW_HEIGHT, WINDOW_WIDTH
+from globals import font, WIDTH, HEIGHT, WINDOW_HEIGHT, WINDOW_WIDTH
 import shop
 
 pygame.init()
@@ -72,7 +72,7 @@ while True:
 
     money_st = globals.format_money(globals.total_money)
     draw_text(money_st, 
-              font_thai, (255, 255, 255), virtual_screen, (167 - 17 * len(money_st), 495))
+              font, (255, 255, 255), virtual_screen, (85 - 11 * len(money_st), 235))
 
     globals.cursor.update(mouse_event)
     globals.cursor.draw(virtual_screen)
