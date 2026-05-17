@@ -1,22 +1,29 @@
-WIDTH, HEIGHT = 800, 600
+import pygame
+import pygame.freetype
+
+WIDTH, HEIGHT = 480, 270
+SCALE = 1
+WINDOW_WIDTH, WINDOW_HEIGHT = WIDTH * SCALE, HEIGHT * SCALE
 FPS = 60
 
 total_money = 0
-profit = 40
+profit = 10
 tip_chance = 0.2
-tip_amount = 200
+tip_amount = 50
 profit_rate = 3
 entities = []
-
-import pygame
-import pygame.freetype
-pygame.init()
 cursor = None
-shop_bounds = pygame.Rect(WIDTH - 425, 25, 400, 550)
-shop_surf = pygame.Surface((400, 550))
+
+pygame.init()
+shop_bounds = pygame.Rect((WIDTH - 295), 20, 275, 230)
+shop_surf = pygame.Surface((shop_bounds.width, shop_bounds.height))
 shop_surf.fill((0, 255, 255))
 font_thai = pygame.freetype.Font("assets/NotoSansThai-Bold.ttf", 30)
 font = pygame.freetype.Font("assets/VarelaRound-Regular.ttf", 24)
+
+def get_mouse_pos():
+    x, y = pygame.mouse.get_pos()
+    return x // SCALE, y // SCALE
 
 def format_money(amount):
     """

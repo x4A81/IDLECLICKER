@@ -1,15 +1,14 @@
 import pygame
+import random
 import globals
 
-import random
-
-def add_profit(a=40, x=None, y=400):
+def add_profit(a=40, x=None, y=globals.WIDTH - 250):
     globals.total_money += a
-    rx = 10 + random.randint(globals.shop_bounds.left+75, globals.shop_bounds.right-75) if x == None else x
+    rx = 10 + random.randint(globals.shop_bounds.left+5, globals.shop_bounds.right-5) if x == None else x
     globals.entities.append(ProfitEffects(rx, y, a))
 
-def add_tip(a=200, x=None, y=350):
-    rx = 10 + random.randint(globals.shop_bounds.left+75, globals.shop_bounds.right-75) if x == None else x
+def add_tip(a=200, x=None, y=globals.HEIGHT - 140):
+    rx = 10 + random.randint(globals.shop_bounds.left+5, globals.shop_bounds.right-5) if x == None else x
     globals.entities.append(Tips(rx, y, a))
 
 class ProfitEffects:
@@ -49,20 +48,21 @@ class Tips:
         self.vel = Vector2(random.uniform(-3, 3), random.uniform(-2, -6))
         self.colour = (200, 200, 0)
         self.kill = False
-        self.img = pygame.image.load("assets/sprites/coin.png")
+        img = pygame.image.load("assets/Sprites.png")
+        self.img = img.subsurface((0,0,32,32))
         self.rect = self.img.get_rect()
 
     def update(self, mouse_event : pygame.event):
         if mouse_event != None and mouse_event.type == pygame.MOUSEBUTTONDOWN:
-            if self.rect.collidepoint(pygame.mouse.get_pos()):
+            if self.rect.collidepoint(globals.get_mouse_pos()):
                 self.kill = True
                 add_profit(self.amount, self.x-10, self.y - 10)
                 return
 
         g = 0.2
-        if self.y > 500: 
+        if self.y > globals.WIDTH - 250: 
             return
-        if self.x < globals.shop_bounds.left + 65 or self.x > globals.shop_bounds.right - 65:
+        if self.x < globals.shop_bounds.left + 10 or self.x > globals.shop_bounds.right - 10:
             return
         if self.y >= 0:
             self.vel.y += g * 1.5

@@ -5,14 +5,15 @@ from upgrades import *
 import pygame
 import random
 import globals
-from globals import font_thai
+from globals import font_thai, WIDTH, HEIGHT, WINDOW_HEIGHT, WINDOW_WIDTH
 import shop
 
 pygame.init()
-screen = pygame.display.set_mode((globals.WIDTH, globals.HEIGHT))
+screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+virtual_screen = pygame.Surface((WIDTH, HEIGHT))
 pygame.display.set_caption("NOODLE SHOP CLICKER")
 clock = pygame.time.Clock()
-bg_img = pygame.image.load("assets/sprites/background.png").convert()
+bg_img = pygame.image.load("assets/Background.png").convert()
 
 next_profit_time = 1000 * globals.profit_rate
 next_tip_time = 2000
@@ -24,7 +25,7 @@ def draw_text(text, font, colour, surface, rect):
 
 play_next_song()
 globals.cursor = Cursor()
-shop.setup_upgrades()
+_shop = shop.Shop()
 
 deleted_update = 0
 while True:
@@ -40,8 +41,8 @@ while True:
         if event.type == SONG_END:
             play_next_song()
 
-    screen.blit(bg_img, (0, 0))
-    screen.blit(globals.shop_surf, (globals.WIDTH - 425, 25))
+    virtual_screen.blit(bg_img, (0, 0))
+    virtual_screen.blit(globals.shop_surf, globals.shop_bounds.topleft)
     globals.cursor.set_hover(False)
     next_profit_time -= dt
     next_tip_time -= dt
@@ -57,7 +58,7 @@ while True:
             et.update(mouse_event)
         else:
             et.update()
-        et.draw(screen)
+        et.draw(virtual_screen)
         if et.kill:
             if hasattr(et, "order"):
                 deleted_update = et.order
@@ -71,8 +72,11 @@ while True:
 
     money_st = globals.format_money(globals.total_money)
     draw_text(money_st, 
-              font_thai, (255, 255, 255), screen, (167 - 17 * len(money_st), 495))
+              font_thai, (255, 255, 255), virtual_screen, (167 - 17 * len(money_st), 495))
 
     globals.cursor.update(mouse_event)
-    globals.cursor.draw(screen)
+    globals.cursor.draw(virtual_screen)
+    scaled_surface = pygame.transform.scale(virtual_screen, (WINDOW_WIDTH, WINDOW_HEIGHT))
+    
+    screen.blit(scaled_surface, (0, 0))
     pygame.display.flip()
