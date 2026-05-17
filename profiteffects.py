@@ -2,29 +2,29 @@ import pygame
 import random
 import globals
 
-def add_profit(a=40, x=None, y=globals.WIDTH - 250):
+def add_profit(a=40, x=None, y=globals.WIDTH - 250, text=None, d=0):
     globals.total_money += a
     rx = 10 + random.randint(globals.shop_bounds.left+5, globals.shop_bounds.right-5) if x == None else x
-    globals.entities.append(ProfitEffects(rx, y, a))
+    globals.entities.append(ProfitEffects(rx, y, a, text, d))
 
 def add_tip(a=200, x=None, y=globals.HEIGHT - 140):
     rx = 10 + random.randint(globals.shop_bounds.left+5, globals.shop_bounds.right-5) if x == None else x
     globals.entities.append(Tips(rx, y, a))
 
 class ProfitEffects:
-    def __init__(self, x, y, amount):
-        self.isclickable = False
+    def __init__(self, x, y, amount, text=None, d=0):
         self.x = x
         self.y = y
-        self.text = f"+{amount}"
+        self.text = f"+{amount}" if not text else text
         self.alpha = 255
         self.font = globals.font
         self.colour = (0, 0, 0, self.alpha)
         self.kill = False
+        self.duration = 1-d
 
     def update(self):
         self.y -= 1  # Move the text up
-        self.alpha -= 5
+        self.alpha -= 5 * self.duration
         if self.alpha <= 0:
             self.kill = True
 
@@ -50,7 +50,7 @@ class Tips:
         self.kill = False
         sheet = globals.sprites
         self.img = sheet.subsurface((0,32,16,16))
-        self.rect = self.img.get_rect()
+        self.rect = self.img.get_rect(center=(self.x, self.y))
 
     def update(self, mouse_event : pygame.event):
         if mouse_event != None and mouse_event.type == pygame.MOUSEBUTTONDOWN:

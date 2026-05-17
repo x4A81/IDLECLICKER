@@ -6,15 +6,18 @@ SCALE = 3
 WINDOW_WIDTH, WINDOW_HEIGHT = WIDTH * SCALE, HEIGHT * SCALE
 FPS = 60
 
+# Game State Variables
 total_money = 0
 profit = 10
 tip_chance = 0.2
 tip_amount = 50
 profit_rate = 3
 entities = []
-cursor = None
+volume = 1
 
 pygame.init()
+cursor = None
+channel1 = pygame.mixer.Channel(1)
 shop_bounds = pygame.Rect((WIDTH - 295), 20, 275, 230)
 shop_surf = pygame.Surface((shop_bounds.width, shop_bounds.height))
 shop_surf.fill((0, 255, 255))

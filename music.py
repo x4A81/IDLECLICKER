@@ -1,4 +1,5 @@
 import pygame
+from globals import channel1
 
 SONG_END = pygame.USEREVENT + 1
 pygame.mixer.init()
@@ -16,8 +17,8 @@ current_track_index = 0
 def play_next_song():
     global current_track_index
     # Load and play the current index
-    pygame.mixer.music.load(playlist[current_track_index])
-    pygame.mixer.music.play()
+    track = pygame.mixer.Sound(playlist[current_track_index])
+    channel1.play(track)
     
     # Move to the next index, loop back to 0 if at the end
     current_track_index = (current_track_index + 1) % len(playlist)

@@ -7,6 +7,7 @@ import random
 import globals
 from globals import font, WIDTH, HEIGHT, WINDOW_HEIGHT, WINDOW_WIDTH
 import shop
+import settings
 
 pygame.init()
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -26,6 +27,7 @@ def draw_text(text, font, colour, surface, rect):
 play_next_song()
 globals.cursor = Cursor()
 _shop = shop.Shop()
+globals.entities.append(settings.Settings())
 
 deleted_update = 0
 while True:
@@ -54,12 +56,12 @@ while True:
         next_tip_time = 3000
 
     for et in globals.entities[:]:
-        if et.isclickable:
+        if hasattr(et, "isclickable"):
             et.update(mouse_event)
         else:
             et.update()
         et.draw(virtual_screen)
-        if et.kill:
+        if hasattr(et, "kill") and et.kill:
             if hasattr(et, "order"):
                 deleted_update = et.order
                 globals.entities.remove(et)

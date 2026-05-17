@@ -1,6 +1,6 @@
 import pygame
-import pygame.image
 import globals
+from profiteffects import add_profit
 
 class Upgrade:
     def __init__(self, order, profit_inc, tip_chance_inc, cost, title, description):
@@ -46,6 +46,7 @@ class Upgrade:
                         globals.total_money -= self.cost
                         globals.profit += self.profit_inc
                         globals.tip_chance += self.tip_chance_inc
+                        add_profit(globals.profit, x=250, text=self.description, d=0.3)
 
     def draw(self, surface):
         if self.cost > globals.total_money:
@@ -57,10 +58,10 @@ class Upgrade:
             y = self.current_y
         
         globals.font.size = 15
-        globals.font.render_to(surface,( self.x + 16, y + 10), self.title, (255,255,255))
+        globals.font.render_to(surface,( self.x + 16, y + 12), self.title, (255,255,255))
         cost = globals.format_money(self.cost)
         globals.font.render_to(surface, (self.rect.right - 40, y + 12), cost, (255, 255, 255))
 
-        globals.font.size = 10
-        globals.font.render_to(surface, (self.x + 14, y + 20), self.description, (0,0,0))
+        # globals.font.size = 10
+        # globals.font.render_to(surface, (self.x + 14, y + 20), self.description, (0,0,0))
         globals.font.size = 34
