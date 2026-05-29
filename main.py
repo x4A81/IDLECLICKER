@@ -18,6 +18,7 @@ bg_img = pygame.image.load("assets/Background.png").convert()
 
 next_profit_time = 1000 * globals.profit_rate
 next_tip_time = 2000
+next_leave_time = 1000
 
 pygame.mouse.set_visible(False)
 
@@ -45,15 +46,23 @@ while True:
 
     virtual_screen.blit(bg_img, (0, 0))
     virtual_screen.blit(globals.shop_surf, globals.shop_bounds.topleft)
+    _shop.draw(virtual_screen)
     globals.cursor.set_hover(False)
     next_profit_time -= dt
     next_tip_time -= dt
+    next_leave_time -= dt
     if next_profit_time <= 0:
         add_profit(globals.profit)
         next_profit_time = 1000 * globals.profit_rate
     if next_tip_time <= 0:
         if random.uniform(0, 1) <= globals.tip_chance: add_tip(globals.tip_amount)
         next_tip_time = 3000
+
+    if next_leave_time <= 0:
+        if random.uniform(0, 1) < 0.1:
+            if globals.leaves_spawned < 3:
+                globals.entities.append(shop.BG_Leaves())
+                globals.leaves_spawned += 1
 
     for et in globals.entities[:]:
         if hasattr(et, "isclickable"):
@@ -71,6 +80,8 @@ while True:
                         other.order -= 1
             else:
                 globals.entities.remove(et)
+
+    _shop.draw_image(virtual_screen, 2)
 
     money_st = globals.format_money(globals.total_money)
     draw_text(money_st, 

@@ -4,11 +4,11 @@ import globals
 
 def add_profit(a=40, x=None, y=globals.WIDTH - 250, text=None, d=0):
     globals.total_money += a
-    rx = 10 + random.randint(globals.shop_bounds.left+5, globals.shop_bounds.right-5) if x == None else x
+    rx = 10 + random.randint(globals.shop_bounds.left+25, globals.shop_bounds.right-25) if x == None else x
     globals.entities.append(ProfitEffects(rx, y, a, text, d))
 
 def add_tip(a=200, x=None, y=globals.HEIGHT - 140):
-    rx = 10 + random.randint(globals.shop_bounds.left+5, globals.shop_bounds.right-5) if x == None else x
+    rx = 10 + random.randint(globals.shop_bounds.left+10, globals.shop_bounds.right-10) if x == None else x
     globals.entities.append(Tips(rx, y, a))
 
 class ProfitEffects:

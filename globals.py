@@ -4,7 +4,7 @@ import pygame.freetype
 WIDTH, HEIGHT = 480, 270
 SCALE = 3
 WINDOW_WIDTH, WINDOW_HEIGHT = WIDTH * SCALE, HEIGHT * SCALE
-FPS = 60
+FPS = 200
 
 # Game State Variables
 total_money = 0
@@ -25,6 +25,7 @@ pygame.freetype.set_default_resolution(72)
 font = pygame.freetype.Font("assets/bytebounce.medium.ttf", 34)
 font.antialiased = False
 sprites = pygame.image.load("assets/Sprites.png")
+leaves_spawned = 0
 
 def get_mouse_pos():
     x, y = pygame.mouse.get_pos()
